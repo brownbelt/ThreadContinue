@@ -65,7 +65,7 @@ BOOL write_remote_mem(HANDLE hProc, LPCVOID pLocalMem, SIZE_T nSize, PVOID *pMem
 
 BOOL execute_dll(HANDLE hProc, HANDLE hThread, PVOID pRemoteDll, DWORD dwOffset)
 {
-	static const DWORD REFLECTIVE_STACK_SIZE = 0x1000000;
+	static const DWORD REFLECTIVE_STACK_SIZE = 0x2000;
 	BOOL ret = FALSE;
 	CONTEXT ctx = { 0 };
 	PVOID pRemoteCtx = NULL;
@@ -95,7 +95,7 @@ BOOL execute_dll(HANDLE hProc, HANDLE hThread, PVOID pRemoteDll, DWORD dwOffset)
 			break;
 
 		// let stack have some room to grow up or down
-		ctx.Rsp = ctx.Rsp - 0x2000;
+		ctx.Rsp = ctx.Rsp - REFLECTIVE_STACK_SIZE;
 #endif
 
 		if (!SetThreadContext(hThread, &ctx))
